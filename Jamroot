@@ -1,0 +1,19 @@
+project fct-dilate
+: build-dir build
+#: requirements <include>/$(TOP)
+#          <cxxflags>-std=c++0x
+#              <cxxflags>-ftemplate-depth=2048
+               ;
+
+path-constant TOP : . ;
+
+path-constant INSTALL_PREFIX : /usr/local ;
+path-constant INSTALL_INC_PREFIX : $(INSTALL_PREFIX)/include ;
+path-constant INSTALL_BIN_PREFIX : $(INSTALL_PREFIX)/bin ;
+path-constant INSTALL_LIB_PREFIX : $(INSTALL_PREFIX)/lib ;
+
+echo "INSTALL_PREFIX = $(INSTALL_PREFIX)" ;
+
+using testing ;
+
+build-project src ;

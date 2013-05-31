@@ -1,0 +1,35 @@
+project fct-dilate/src ;
+
+exe fct-dilate
+: main.c
+
+  #---| basics
+
+  alloc.c
+  common.c
+  image.c
+  pgmio.c
+  args.c
+
+  #---| structure tensor
+
+  norm.c
+  structure-tensor.c
+  rotation.c
+
+  #---| convolution
+
+  convolution.c
+
+  #---| integration
+
+  integration.c
+  fct.c
+  os.c
+  rt.c
+
+: <cflags>-fopenmp
+  <linkflags>-lm
+  <linkflags>-lgomp
+
+;
