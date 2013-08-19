@@ -82,28 +82,28 @@ void disalloc_image(image_t* image)
   image->data = (void*)0;
 }
 
-// allocates an image and copies content from 'orig'
-// to the new image having its own storage
-image_t clone_image(image_t const orig)
+// allocates an image and copies content from 'source'
+// to the new image which has its own storage
+image_t clone_image(image_t const source)
 {
-  image_t out=orig;
-  alloc_image(&out);
-  const long bound = 2*orig.boundary;
-  copy_matrix(orig.data,out.data,orig.nx+bound,orig.ny+bound);
-  return out;
+  image_t target = source;
+  alloc_image( &target );
+  copy_image_data( source, target );
+  return target;
 }
 
-void copy_image_data(image_t const from,image_t to)
+void copy_image_data(image_t const source, image_t target)
 {
-  assert(from.nx==to.nx);
-  assert(from.ny==to.ny);
-  assert(from.boundary==to.boundary);
+  assert(source.nx == target.nx);
+  assert(source.ny == target.ny);
+  assert(source.boundary == target.boundary);
 
-  const long bound = 2*to.boundary;
-  copy_matrix(from.data,to.data,to.nx+bound,to.ny+bound);
+  const long bound = 2*target.boundary;
+
+  copy_matrix( source.data, target.data, target.nx+bound, target.ny+bound );
 }
 
-float_pair  image_min_max(image_t const image)
+float_pair image_min_max(image_t const image)
 {
   float_pair minmax = { FLT_MAX,FLT_MIN };
 
@@ -152,10 +152,10 @@ void reflecting_boundaries(image_t image)
   float** const u    = image.data;
 
   long    i,j;
-  #pragma omp parallel private(i,j)
+  //#pragma omp parallel private(i,j)
   {
     // top & bottom
-    #pragma omp for schedule(static) nowait
+    //#pragma omp for schedule(static) nowait
     for(i = bd; i < nx; i++)
     {
       for(j = 0; j < bd; j++)
@@ -165,7 +165,7 @@ void reflecting_boundaries(image_t image)
     }
 
     // left & right
-    #pragma omp for schedule(static) nowait
+    //#pragma omp for schedule(static) nowait
     for(j = bd; j < ny; j++)
     {
       for(i = 0; i < bd; i++)
@@ -174,7 +174,7 @@ void reflecting_boundaries(image_t image)
       }
     }
 
-    #pragma omp for schedule(static) nowait
+    //#pragma omp for schedule(static) nowait
     for(i = 0; i < bd; i++)
       for(j = 0; j < bd; j++)
       {

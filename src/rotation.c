@@ -122,6 +122,7 @@ float auto_rotation( image_t image,
   return bilinear_interpolation(image,coords);
 }
  
+
 void adaptive_se_program_prepare( image_t	const	image,
 								  step_t*  const	step )
 {  

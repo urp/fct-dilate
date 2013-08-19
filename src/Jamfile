@@ -31,5 +31,4 @@ exe fct-dilate
 : <cflags>-fopenmp
   <linkflags>-lm
   <linkflags>-lgomp
-
 ;

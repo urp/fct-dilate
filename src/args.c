@@ -11,12 +11,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
@@ -51,11 +51,11 @@ int find_arg(const char   keychar,
              char** argv)
 { size_t i;
   for(i=0;i<argc;++i)
-  { 
+  {
     argkey_t token = is_key(argv[i]);
     if(token==KEYWORD && strcmp(keyword,argv[i]+2)==0)
-	return i;
-    if(token==KEYCHAR && argv[i][1]==keychar) 
+    return i;
+    if(token==KEYCHAR && argv[i][1]==keychar)
         return i;
   }
   return -1;
@@ -64,13 +64,13 @@ int find_arg(const char   keychar,
 void initialize_step(image_t image,step_t* step)
 {
   if(step->program_prepare)
-	step->program_prepare(image,step);
+    step->program_prepare(image,step);
 
   if(step->rot_prepare)
-	step->rot_prepare(image,step);
+    step->rot_prepare(image,step);
 
   if(step->norm_prepare)
-	step->norm_prepare(image,step);
+    step->norm_prepare(image,step);
   /*
   step->init_state=1;
   step->rot(image,1,1,0,0,step);
@@ -80,44 +80,44 @@ void initialize_step(image_t image,step_t* step)
 
 param_storage_t initialize_storage()
 {
-  param_storage_t storage 	=
-  { .p_norm           		= { .p          = 100.f },
-	
-    .elliptic_norm    		= { .main_axes  = { .x = .01f,
-												.y = 2.f  
-											  }
-							  },
-	
-    .fixed_rotation   		= { .angle      = .1f*M_PI },
-	
-	.auto_rotation    		= { .sigma_pre  = .5f,
-								.sigma      = 1.5f,
-								.angles     = { .data     = 0,
-												.nx       = 0,
-												.ny       = 0,
-												.boundary = 0  
-											  }
-							  },
-	.adaptive_se_program	= {	.sigma_pre  = .5f,
-								.sigma      = 1.5f,
-								.angles     = { .data     = 0,
-												.nx       = 0,
-												.ny       = 0,
-												.boundary = 0  
-											  },
-								.lambda1    = { .data     = 0,
-												.nx       = 0,
-												.ny       = 0,
-												.boundary = 0  
-											  },
-								.lambda2    = { .data     = 0,
-												.nx       = 0,
-												.ny       = 0,
-												.boundary = 0  
-											  },
-								.lambda1_max= FLT_MIN,
-								.lambda2_max= FLT_MIN
-							  }
+  param_storage_t storage   =
+  { .p_norm                 = { .p          = 100.f },
+
+    .elliptic_norm          = { .main_axes  = { .x = .01f,
+                                                .y = 2.f
+                                              }
+                              },
+
+    .fixed_rotation         = { .angle      = .1f*M_PI },
+
+    .auto_rotation          = { .sigma_pre  = .5f,
+                                .sigma      = 1.5f,
+                                .angles     = { .data     = 0,
+                                                .nx       = 0,
+                                                .ny       = 0,
+                                                .boundary = 0
+                                              }
+                              },
+    .adaptive_se_program    = { .sigma_pre  = .5f,
+                                .sigma      = 1.5f,
+                                .angles     = { .data     = 0,
+                                                .nx       = 0,
+                                                .ny       = 0,
+                                                .boundary = 0
+                                              },
+                                .lambda1    = { .data     = 0,
+                                                .nx       = 0,
+                                                .ny       = 0,
+                                                .boundary = 0
+                                              },
+                                .lambda2    = { .data     = 0,
+                                                .nx       = 0,
+                                                .ny       = 0,
+                                                .boundary = 0
+                                              },
+                                .lambda1_max= FLT_MIN,
+                                .lambda2_max= FLT_MIN
+                              }
   };
   return storage;
 }
@@ -147,11 +147,11 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
 {
   printf("parse_args: initializing arguments...\n");
 
-  //boundary is set to minimal required value 
+  //boundary is set to minimal required value
   //implicitly by other options
   args->boundary = 0;
 
-  
+
   // input file
   char* keyword = "input";
   char  keychar = 'i';
@@ -161,7 +161,7 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
     printf("setting '%s'\t\t= %s\n",keyword,args->inpath);
   }else
     key_parse_exception(keyword);
-  
+
 
   // output file
   keyword = "output";
@@ -173,7 +173,7 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   }else
     key_parse_exception(keyword);
 
-    
+
   // stepcount
   keyword = "steps";
   keychar = 'N';
@@ -213,46 +213,46 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   printf("setting '%s'\t= ",keyword);
   if(pos!=-1)
   { printf("true\n");
-	args->write_step=1;
+    args->write_step=1;
   }else
   { printf("false\n");
-	args->write_step=0;
+    args->write_step=0;
   }
 
-  
+
   // method
   keyword = "method";
   keychar = 'm';
   pos = find_arg(keychar,keyword,argc,argv);
   printf("setting '%s'\t= ",keyword);
   if(pos!=-1 && ++pos<argc)
-  { 
+  {
     if(strcmp(argv[pos],"rt")==0)
     { args->step.integrate=&rouy_tourin_step;
       if(args->boundary<1)
-	    args->boundary=1;
+        args->boundary=1;
       printf("rouy tourin\n");
     }
     if(strcmp(argv[pos],"os")==0)
     { args->step.integrate=&osher_sethian_step;
       if(args->boundary<2)
-	    args->boundary=2;
+        args->boundary=2;
       printf("osher sethian\n");
     }
     if(strcmp(argv[pos],"fct")==0)
     { args->step.integrate=&flux_corrected_step;
       if(args->boundary<2)
-	    args->boundary=2;
-      printf("flux_corrected\n");
+        args->boundary=2;
+      printf("flux corrected\n");
     }
   }else
   { args->step.integrate=&flux_corrected_step;
     if(args->boundary<2)
-	  args->boundary=2;
+      args->boundary=2;
     printf("flux_corrected (default)\n");
   }
 
-  // program 
+  // program
   keyword = "program";
   keychar = 'p';
   pos = find_arg(keychar,keyword,argc,argv);
@@ -265,25 +265,25 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   args->step.norm_info=(void*)0;
   if(pos!=-1 && ++pos<argc)
   {
-	//auto_rotation
+    //auto_rotation
     if(strcmp(argv[pos],"adaptive_se")==0)
-    { 
+    {
 
-	  args->step.program_prepare=&adaptive_se_program_prepare;
+      args->step.program_prepare=&adaptive_se_program_prepare;
 
-	  args->step.rot     	=&adaptive_se_program_rotation;
-	  args->step.norm     	=&adaptive_se_program_norm;
+      args->step.rot        =&adaptive_se_program_rotation;
+      args->step.norm       =&adaptive_se_program_norm;
 
-	  args->step.rot_info	=&params->adaptive_se_program;
-	  args->step.norm_info	=&params->adaptive_se_program;
+      args->step.rot_info   =&params->adaptive_se_program;
+      args->step.norm_info  =&params->adaptive_se_program;
       args->boundary++;
       printf("adaptive_se");
 
-	  if( (pos+1)<argc && !is_key(argv[pos+1]))
-      {	// read sigma
+      if( (pos+1)<argc && !is_key(argv[pos+1]))
+      { // read sigma
         const float sigma = (float) strtod(argv[pos+1], (char **)NULL);
         if(sigma<0.f)
-	      argument_parse_exception(keyword);
+          argument_parse_exception(keyword);
         params->adaptive_se_program.sigma=sigma;
         printf(" (sigma=%g",params->adaptive_se_program.sigma);
       }else
@@ -291,12 +291,12 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
         params->adaptive_se_program.sigma=1.5f;
         printf(" (sigma=%g (default)",params->adaptive_se_program.sigma);
       }
-	  
-	  if( (pos+2)<argc && !is_key(argv[pos+1]) && !is_key(argv[pos+2]))
-      {	// read sigma_pre
+
+      if( (pos+2)<argc && !is_key(argv[pos+1]) && !is_key(argv[pos+2]))
+      { // read sigma_pre
         const float sigma_pre = (float) strtod(argv[pos+2], (char **)NULL);
         if(sigma_pre<0.f)
-	      argument_parse_exception(keyword);
+          argument_parse_exception(keyword);
         params->adaptive_se_program.sigma_pre=sigma_pre;
         printf(",sigma_pre=%g)\n",params->adaptive_se_program.sigma_pre);
       }else
@@ -304,10 +304,10 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
         params->adaptive_se_program.sigma_pre=.5f;
         printf(",sigma_pre=%g (default))\n",params->adaptive_se_program.sigma_pre);
       }
-	  return;
+      return;
     }
   }
-  
+
   // norm
   keyword = "norm";
   keychar = 'n';
@@ -317,10 +317,10 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   args->step.norm_prepare=(void*)0;
   args->step.norm_info=(void*)0;
   if(pos!=-1 && ++pos<argc)
-  { 
+  {
     //circle_norm
     if(strcmp(argv[pos],"circle")==0)
-    { args->step.norm     =&circle_norm;  
+    { args->step.norm     =&circle_norm;
       printf("circle_norm\n");
     }
     //diamond_norm
@@ -330,32 +330,32 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
     }
     //p_norm
     if(strcmp(argv[pos],"p")==0)
-    { 
+    {
       if(++pos<argc && !is_key(argv[pos]))
-      {	// read parameter
-		float p= (float) strtod(argv[pos], (char **)NULL);
+      { // read parameter
+        float p= (float) strtod(argv[pos], (char **)NULL);
         if(p==0.f)
           argument_parse_exception(keyword);
         params->p_norm.p = p;
         printf("p_norm (p=%g)\n",params->p_norm.p);
-      }else 
+      }else
       { // default parameter
-		params->p_norm.p = 100.f;
-        printf("p_norm (default p=%g)\n",params->p_norm.p); 
+        params->p_norm.p = 100.f;
+        printf("p_norm (default p=%g)\n",params->p_norm.p);
       }
       args->step.norm=&p_norm;
       args->step.norm_info=&params->p_norm;
     }
     //elliptic_norm
     if(strcmp(argv[pos],"elliptic")==0)
-    { 
+    {
       printf("elliptic_norm");
       if( (pos+2)<argc && !is_key(argv[pos+1]) && !is_key(argv[pos+2]) )
-      {	// read parameters
+      { // read parameters
         float ax= (float) strtod(argv[pos+1], (char **)NULL);
         float ay= (float) strtod(argv[pos+2], (char **)NULL);
         if(ax<=0.f||ay<=0.f)
-	      argument_parse_exception(keyword);
+          argument_parse_exception(keyword);
         params->elliptic_norm.main_axes.x=ax;
         params->elliptic_norm.main_axes.y=ay;
         printf(" (a=%g,b=%g)\n",params->elliptic_norm.main_axes.x,
@@ -366,7 +366,7 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
         params->elliptic_norm.main_axes.y=.1f;
         printf(" (a=%g (default),b=%g (default))\n",
                params->elliptic_norm.main_axes.x,
-               params->elliptic_norm.main_axes.y 	);
+               params->elliptic_norm.main_axes.y    );
       }
       args->step.norm=&elliptic_norm;
       args->step.norm_info=&params->elliptic_norm;
@@ -385,47 +385,47 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   args->step.rot_prepare=(void*)0;
   args->step.rot_info=(void*)0;
   if(pos!=-1 && ++pos<argc)
-  { 
+  {
     //no_rotation
     if(strcmp(argv[pos],"none")==0)
-    { args->step.rot     =&no_rotation;  
+    { args->step.rot     =&no_rotation;
       printf("no_rotation\n");
     }
-	
+
     //fixed_rotation
     if(strcmp(argv[pos],"fixed")==0)
     {
       printf("fixed_rotation");
       if(++pos<argc && !is_key(argv[pos]))
-      {	// read parameters
-		const float angle= (float) strtod(argv[pos], (char **)NULL);
+      { // read parameters
+        const float angle= (float) strtod(argv[pos], (char **)NULL);
         if(angle==0.f)
           argument_parse_exception(keyword);
         params->fixed_rotation.angle=angle;
-		printf(" (angle=%g)\n",params->fixed_rotation.angle); 
+        printf(" (angle=%g)\n",params->fixed_rotation.angle);
       }else
-      { // default parameters 
-		params->fixed_rotation.angle = 0.f;
-        printf(" (default angle=%g)\n",params->fixed_rotation.angle); 
+      { // default parameters
+        params->fixed_rotation.angle = 0.f;
+        printf(" (default angle=%g)\n",params->fixed_rotation.angle);
       }
       args->step.rot=&fixed_rotation;
       args->step.rot_info=&params->fixed_rotation;
       args->boundary++;
-	}
+    }
 
-	//auto_rotation
+    //auto_rotation
     if(strcmp(argv[pos],"auto")==0)
-    { args->step.rot     	=&auto_rotation;
-	  args->step.rot_prepare=&auto_rotation_prepare;
-	  args->step.rot_info	=&params->auto_rotation;
+    { args->step.rot        =&auto_rotation;
+      args->step.rot_prepare=&auto_rotation_prepare;
+      args->step.rot_info   =&params->auto_rotation;
       args->boundary++;
       printf("auto_rotation");
 
-	  if( (pos+1)<argc && !is_key(argv[pos+1]))
-      {	// read sigma
+      if( (pos+1)<argc && !is_key(argv[pos+1]))
+      { // read sigma
         const float sigma = (float) strtod(argv[pos+1], (char **)NULL);
         if(sigma<0.f)
-	      argument_parse_exception(keyword);
+          argument_parse_exception(keyword);
         params->auto_rotation.sigma=sigma;
         printf(" (sigma=%g",params->auto_rotation.sigma);
       }else
@@ -433,12 +433,12 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
         params->auto_rotation.sigma=1.5f;
         printf(" (sigma=%g (default)",params->auto_rotation.sigma);
       }
-	  
-	  if( (pos+2)<argc && !is_key(argv[pos+1]) && !is_key(argv[pos+2]))
-      {	// read sigma_pre
+
+      if( (pos+2)<argc && !is_key(argv[pos+1]) && !is_key(argv[pos+2]))
+      { // read sigma_pre
         const float sigma_pre = (float) strtod(argv[pos+2], (char **)NULL);
         if(sigma_pre<0.f)
-	      argument_parse_exception(keyword);
+          argument_parse_exception(keyword);
         params->auto_rotation.sigma_pre=sigma_pre;
         printf(",sigma_pre=%g)\n",params->auto_rotation.sigma_pre);
       }else
@@ -453,5 +453,5 @@ void parse_args(args_t* args,param_storage_t* params,int argc,char** argv)
   { args->step.rot=&no_rotation;
     printf("no_rotation (default)\n");
   }
-  
+
 }

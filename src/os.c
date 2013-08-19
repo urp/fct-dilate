@@ -11,24 +11,24 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#include	"os.h"
+#include    "os.h"
 
-#include        <math.h>
-#include	<stdio.h>
+#include    <math.h>
+#include    <stdio.h>
 
 //calculates the update of pixel (i,j) using the method of osher&sethian
-float	os_scheme(  image_t image,
+float   os_scheme(  image_t image,
                     long    i,
                     long    j,
                     step_t  step)
@@ -65,7 +65,7 @@ float	os_scheme(  image_t image,
   float ybb= yb   - x0m1 + x0m2;
 
   //add "inflow" from both sides
-  float_pair du = { .x =        max(xf - .5f*minmod(xff,xcc),0.f) 
+  float_pair du = { .x =        max(xf - .5f*minmod(xff,xcc),0.f)
                         + fabs( min(xb + .5f*minmod(xcc,xbb),0.f) ),
                     .y =        max(yf - .5f*minmod(yff,ycc),0.f)
                         + fabs( min(yb + .5f*minmod(ycc,ybb),0.f) ) };
@@ -75,12 +75,12 @@ float	os_scheme(  image_t image,
 }
 
 void osher_sethian_step( image_t image,
-                         step_t	 step	
+                         step_t  step
                        )
 {
   //prepare step information
   step.scheme = &os_scheme;
-	
+
   //integrate step
   heun_step(image,step);
 }

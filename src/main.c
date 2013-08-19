@@ -27,8 +27,11 @@
 
 int     main( int argc, char** argv )
 {
+  omp_set_num_threads(1);
+
   printf( "starting dilation...\n" );
   printf( "using %d processes\n", omp_get_num_procs() );
+  printf( "using %d threads\n", omp_get_num_threads() );
 
   //initialize program parameters
   args_t args;
@@ -48,7 +51,7 @@ int     main( int argc, char** argv )
 
   for( args.step.t = 0; args.step.t < args.stepcount; ++args.step.t )
   {
-    printf( "\rstep %ld", args.step.t+1 );
+    printf( "\rstep %ld\n", args.step.t+1 );
 
     // integrate
     args.step.integrate( image, args.step );

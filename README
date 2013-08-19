@@ -1,0 +1,39 @@
+fct-dilate
+
+Copyright Peter Urban 2010-2013
+
+An implementation of dilation/erosion using (anisotropic) flux corrected transport schemes and different integrators.
+
+Requirements
+
+* Preconfigured for boost-build
+  type "bjam
+
+Transport Schemes:
+
+* Rouy and Tourin (--method rt)
+* Osher and Sethian (--method os)
+* Flux Corrected Transpor (--method fct)
+
+Supported structuring elements:
+
+* adaptive structuring elements (--program adaptive_se)
+  aligns structure element along image edges
+
+* se rotation
+
+  * no rotation (--rotation none)
+  * fixed angle (--rotation fixed ANGLE)
+  * auto rotation (--rotation auto SIGMA SIGMA_PRE)
+
+* available norms:
+
+  * circle  (--norm circle equivalent to --norm p 2)
+  * diamond (--norm diamond equivalent to --norm p 1" but faster)
+  * custom p-norm (--norm p VALUE)
+  * elliptic norm (--norm elliptic X Y)
+
+Supported integrators:
+
+* Heun integration (runge kutta)
+* euler integration
